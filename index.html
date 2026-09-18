@@ -3,15 +3,14 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Photobooth — Booth</title>
-  <meta name="description" content="Photobooth multi-foto + frame PNG transparan — plain HTML" />
+  <title>Photobooth — Booth MNCU</title>
+  <meta name="description" content="Photobooth multi-foto + frame PNG transparan — neo brutalism" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Oswald:wght@400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="./style.css" />
 </head>
 <body>
-  <!-- icons -->
   <svg width="0" height="0" style="position:absolute">
     <defs>
       <symbol id="i-camera" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3.5"/></symbol>
@@ -22,19 +21,28 @@
     </defs>
   </svg>
 
-  <section id="view-gate" class="view view-gate">
-    <div class="landing-grid"></div>
-    <div id="ghost" class="landing-ghost">
-      <div id="red">
-        <div id="pupil"></div><div id="pupil1"></div>
-        <div id="eye"></div><div id="eye1"></div>
-        <div id="top0"></div><div id="top1"></div><div id="top2"></div><div id="top3"></div><div id="top4"></div>
-        <div id="st0"></div><div id="st1"></div><div id="st2"></div><div id="st3"></div><div id="st4"></div><div id="st5"></div>
-        <div id="an1"></div><div id="an2"></div><div id="an3"></div><div id="an4"></div><div id="an5"></div><div id="an6"></div><div id="an7"></div><div id="an8"></div><div id="an9"></div><div id="an10"></div><div id="an11"></div><div id="an12"></div><div id="an13"></div><div id="an14"></div><div id="an15"></div><div id="an16"></div><div id="an17"></div><div id="an18"></div>
-      </div>
-      <div id="shadow"></div>
+  <div id="mobile-block" class="mobile-block">
+    <div class="mobile-card">
+      <h2>Harap Gunakan Desktop</h2>
+      <p>Photobooth ini dirancang untuk layar lebar. Buka di laptop/desktop untuk akses kamera & frame optimal.</p>
+      <p style="margin-top:12px;font-weight:700">Gunakan desktop untuk mengakses web ini.</p>
     </div>
-    <div class="neo-landing-card">
+  </div>
+
+  <section id="view-gate" class="view view-gate">
+    <div class="neo-grid"></div>
+    <div id="ghost" class="ghost-base landing-ghost">
+      <div id="red"><div id="pupil"></div><div id="pupil1"></div><div id="eye"></div><div id="eye1"></div><div id="top0"></div><div id="top1"></div><div id="top2"></div><div id="top3"></div><div id="top4"></div><div id="st0"></div><div id="st1"></div><div id="st2"></div><div id="st3"></div><div id="st4"></div><div id="st5"></div><div id="an1"></div><div id="an2"></div><div id="an3"></div><div id="an4"></div><div id="an5"></div><div id="an6"></div><div id="an7"></div><div id="an8"></div><div id="an9"></div><div id="an10"></div><div id="an11"></div><div id="an12"></div><div id="an13"></div><div id="an14"></div><div id="an15"></div><div id="an16"></div><div id="an17"></div><div id="an18"></div></div><div id="shadow"></div>
+    </div>
+    <div class="marco-head">
+      <div class="marco-headline">
+        <span class="outline" aria-hidden="true">MARCO CAKE</span>
+        <span>MARC<span style="position:relative;display:inline-block">O<img src="./topi.webp" alt="" class="topi-hat" width="80" height="80" loading="eager"></span> CAKE</span>
+      </div>
+      <div style="height:6px;width:90px;background:#111;margin:10px auto 0"></div>
+      <p style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.18em;color:#6b7280;margin-top:8px">PHOTOBOOTH • LOBBY MNC UNIVERSITY</p>
+    </div>
+    <div class="neo-card neo-landing-card">
       <h1 class="neo-title">Izinkan akses kamera<br>untuk masuk</h1>
       <p class="neo-desc">Kamera hanya di device kamu. Tidak ada upload — semua di browser.</p>
       <button id="btn-allow" class="neo-btn neo-btn-primary"><span>Buka Kamera</span><svg class="icon"><use href="#i-camera"/></svg></button>
@@ -42,37 +50,40 @@
     </div>
   </section>
 
-  <section id="view-frames" class="view" hidden>
+  <section id="view-frames" class="view view-frames" hidden>
+    <div class="neo-grid"></div>
+    <div class="ghost-base" id="ghost-frames" aria-hidden="true" style="left:10%;top:15%"></div>
     <div class="wrap">
       <header class="top">
         <h2>Pilih Frame</h2>
-        <p class="muted">1 frame = beberapa foto. Kiri preview strip, kanan kamera akan menyesuaikan rasio slot.</p>
+        <p>Grid menyesuaikan rasio PNG — card wadah otomatis ngikut tinggi frame biar preview bagus.</p>
       </header>
       <div id="frame-grid" class="grid"></div>
-      <button id="btn-back-to-gate" class="btn ghost"><svg class="icon icon-sm"><use href="#i-arrow"/></svg> Kembali</button>
+      <button id="btn-back-to-gate" class="neo-btn" style="margin-top:12px"><svg class="icon icon-sm"><use href="#i-arrow"/></svg> Kembali</button>
     </div>
   </section>
 
-  <section id="view-booth" class="view" hidden>
+  <section id="view-booth" class="view view-booth" hidden>
+    <div class="neo-grid"></div>
     <div class="booth-layout">
       <div class="booth-head">
         <h2 id="booth-title">Booth</h2>
         <div class="row" style="justify-content:flex-end">
           <div class="progress" id="progress"></div>
-          <span class="muted" id="booth-step" style="font-size:12px"></span>
+          <span class="muted" id="booth-step" style="font-size:12px;font-family:'JetBrains Mono',monospace"></span>
         </div>
       </div>
       <div class="stage">
         <div class="frame-preview-wrap">
           <div class="frame-preview" id="frame-preview">
-            <div class="frame-preview-bg muted">Memuat frame…</div>
+            <div class="frame-preview-bg">Memuat frame…</div>
             <div class="slot-layer" id="slot-layer"></div>
             <img id="frame-preview-img" class="frame-preview-img" alt="" />
           </div>
-          <p class="muted center" style="font-size:12px">Preview strip — tiap foto langsung masuk ke slot</p>
+          <p class="center" style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#6b7280">Preview strip — tiap foto langsung masuk ke slot kiri</p>
           <div class="row">
-            <button id="btn-change-frame" class="btn ghost"><svg class="icon icon-sm"><use href="#i-grid"/></svg> Ganti Frame</button>
-            <button id="btn-retake" class="btn ghost" hidden><svg class="icon icon-sm"><use href="#i-refresh"/></svg> Ulangi Slot</button>
+            <button id="btn-change-frame" class="neo-btn"><svg class="icon icon-sm"><use href="#i-grid"/></svg> Ganti Frame</button>
+            <button id="btn-retake" class="neo-btn" hidden><svg class="icon icon-sm"><use href="#i-refresh"/></svg> Ulangi Slot</button>
           </div>
         </div>
         <div class="camera-panel">
@@ -82,9 +93,9 @@
             <div id="countdown" class="countdown" hidden></div>
             <div id="flash" class="flash" hidden></div>
           </div>
-          <p id="booth-hint" class="muted center"></p>
+          <p id="booth-hint" class="center" style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#374151"></p>
           <div class="row">
-            <button id="btn-capture" class="btn primary big"><svg class="icon"><use href="#i-camera"/></svg> <span id="capture-text">Ambil Foto</span></button>
+            <button id="btn-capture" class="neo-btn neo-btn-primary" style="padding:14px 22px;font-size:15px"><svg class="icon"><use href="#i-camera"/></svg> <span id="capture-text">Ambil Foto</span></button>
           </div>
           <div id="thumbs" class="thumbs" hidden></div>
         </div>
@@ -92,20 +103,26 @@
     </div>
   </section>
 
-  <section id="view-result" class="view" hidden>
-    <div class="wrap center">
-      <h2>Hasil Strip</h2>
-      <p class="muted">Tap tahan / klik kanan untuk save. Atau klik Download.</p>
-      <img id="result-img" class="result" alt="hasil photobooth" />
-      <canvas id="final-canvas" hidden></canvas>
-      <div class="row center">
-        <button id="btn-download" class="btn primary"><svg class="icon icon-sm"><use href="#i-download"/></svg> Download PNG</button>
-        <button id="btn-restart" class="btn ghost"><svg class="icon icon-sm"><use href="#i-refresh"/></svg> Foto Lagi</button>
-        <button id="btn-change-frame2" class="btn ghost"><svg class="icon icon-sm"><use href="#i-grid"/></svg> Ganti Frame</button>
+  <section id="view-result" class="view view-result" hidden>
+    <div class="neo-grid"></div>
+    <div class="result-layout">
+      <div class="result-side">
+        <button id="btn-change-frame2" class="neo-btn"><svg class="icon icon-sm"><use href="#i-grid"/></svg> Ganti Frame</button>
+        <button id="btn-restart" class="neo-btn neo-btn-dark"><svg class="icon icon-sm"><use href="#i-refresh"/></svg> Foto Lagi</button>
+        <p class="result-meta">Kiri: ganti & ulang</p>
+      </div>
+      <div class="result-center">
+        <h2 style="font-family:'Oswald',sans-serif;text-transform:uppercase">Hasil Strip</h2>
+        <p class="result-meta">Tap tahan / klik kanan untuk save</p>
+        <img id="result-img" class="result" alt="hasil photobooth" />
+        <canvas id="final-canvas" hidden></canvas>
+      </div>
+      <div class="result-side">
+        <button id="btn-download" class="neo-btn neo-btn-primary"><svg class="icon icon-sm"><use href="#i-download"/></svg> Download PNG</button>
+        <p class="result-meta">Kanan: download — preview di tengah</p>
       </div>
     </div>
   </section>
-
 
   <script src="./app.js"></script>
 </body>

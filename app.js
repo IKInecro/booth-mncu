@@ -1,4 +1,4 @@
-// ponytail: plain JS, no emoji, SVG icons, kiri frame langsung keisi, kanan kamera rasio ngikut slot
+// ponytail: neo brutalism light, ghost interaktif, grid rasio PNG, result samping, desktop-only
 const $ = s => document.querySelector(s)
 const views = {
   gate: $('#view-gate'),
@@ -6,8 +6,35 @@ const views = {
   booth: $('#view-booth'),
   result: $('#view-result'),
 }
+const ghost = $('#ghost')
+const mobileBlock = $('#mobile-block')
+function isMobile(){ return window.innerWidth <= 768 || /Android|iPhone|iPad|iPod/i.test(navigator.userAgent) }
+function updateMobileBlock(){
+  if(!mobileBlock) return
+  const m = isMobile()
+  mobileBlock.style.display = m ? 'grid' : 'none'
+  // prevent interaction when mobile
+  document.body.style.overflow = m ? 'hidden' : ''
+}
+window.addEventListener('resize', updateMobileBlock)
+updateMobileBlock()
+
 function show(k){
+  if(isMobile() && k !== 'gate'){
+    // tetap di gate + mobile block
+    updateMobileBlock()
+    return
+  }
   Object.entries(views).forEach(([name,el])=> el.hidden = name!==k)
+  // pindah ghost ke view aktif biar interaktif di semua halaman
+  if(ghost){
+    const target = views[k]
+    if(target && !target.contains(ghost)){
+      target.appendChild(ghost)
+      ghost.style.left='12%'; ghost.style.top='18%'
+    }
+  }
+  updateMobileBlock()
 }
 let stream=null
 let frames=[]
@@ -31,6 +58,7 @@ const resultImg=$('#result-img')
 const finalCanvas=$('#final-canvas')
 
 $('#btn-allow').onclick = async ()=>{
+  if(isMobile()){ updateMobileBlock(); return }
   const msg=$('#gate-msg')
   msg.hidden=true; msg.textContent=''
   try{
@@ -62,8 +90,27 @@ async function loadFrames(){
   grid.innerHTML=''
   frames.forEach(f=>{
     const card=document.createElement('button')
-    card.className='frame-card'
-    card.innerHTML=`<img src="${f.src}" alt="${f.name}" loading="lazy"><b>${f.name}</b><span>${f.slots.length} foto • ${f.w}×${f.h}</span>`
+    card.className='frame-card neo-card'
+    const ratio = f.w/f.h
+    // wadah menyesuaikan rasio png — card bagus, tidak gepeng
+    card.style.display='flex'; card.style.flexDirection='column'
+    const imgWrap=document.createElement('div')
+    imgWrap.style.width='100%'
+    imgWrap.style.aspectRatio=String(ratio)
+    imgWrap.style.overflow='hidden'
+    imgWrap.style.background='#FAFAFA'
+    imgWrap.style.border='3px solid #111'
+    imgWrap.style.display='grid'
+    imgWrap.style.placeItems='center'
+    const img=document.createElement('img')
+    img.src=f.src; img.alt=f.name; img.loading='lazy'
+    img.style.width='100%'; img.style.height='100%'; img.style.objectFit='contain'
+    imgWrap.appendChild(img)
+    const meta=document.createElement('div')
+    meta.style.marginTop='10px'
+    meta.innerHTML=`<b>${f.name}</b><span>${f.slots.length} foto • ${f.w}×${f.h}</span>`
+    card.appendChild(imgWrap); card.appendChild(meta)
+    // set grid item span? keep 2 cols, but tall frames will look tall naturally
     card.onclick=()=> selectFrame(f)
     grid.appendChild(card)
   })
@@ -72,12 +119,9 @@ function selectFrame(f){
   selected=f
   photosCanvases=[]
   boothTitle.textContent = f.name
-  // set frame preview image
   framePreviewImg.src = f.src
-  // set preview aspect to frame ratio
   const preview=$('#frame-preview')
   preview.style.aspectRatio = `${f.w}/${f.h}`
-  // kamera rasio ngikut slot pertama
   const ratio = f.slots[0] ? (f.slots[0].w / f.slots[0].h) : 3/4
   videoWrap.style.aspectRatio = String(ratio)
   buildSlots()
@@ -93,7 +137,6 @@ function buildSlots(){
     const el=document.createElement('div')
     el.className='slot empty'
     el.dataset.idx=i
-    // posisi skala ke 100% (frame preview width = 100%)
     el.style.left = (s.x / W * 100) + '%'
     el.style.top = (s.y / H * 100) + '%'
     el.style.width = (s.w / W * 100) + '%'
@@ -162,7 +205,6 @@ function captureToCanvas(){
   const c=document.createElement('canvas')
   c.width=vw; c.height=vh
   const ctx=c.getContext('2d')
-  // ponytail: result jangan mirror — preview video mirror via CSS, tapi hasil canvas tidak di-flip
   ctx.drawImage(video,0,0,vw,vh)
   return c
 }
@@ -252,18 +294,15 @@ $('#btn-download').onclick=()=>{
 $('#btn-restart').onclick=()=>{
   photosCanvases=[]
   resultImg.src=''
-  // rebuild preview + kamera rasio tetap
   renderProgress()
   show('booth')
   startCamera()
 }
 loadFrames()
 show('gate')
-// ghost wandering — dari web-jualan
+// ghost wandering — interaktif di semua view
 ;(function(){
-  const ghost=document.getElementById('ghost')
-  const gate=document.getElementById('view-gate')
-  if(!ghost||!gate) return
+  if(!ghost) return
   const palette=['#22C55E','#0038FF','#FF4D8D','#FACC15','#EF4444']
   let last=-1
   setInterval(()=>{
@@ -277,7 +316,9 @@ show('gate')
     const delay=1200+Math.random()*1800
     const dur=(0.9+Math.random()*0.9).toFixed(2)
     ghost.style.transition=`left ${dur}s ease, top ${dur}s ease, transform .25s ease`
-    const rect=gate.getBoundingClientRect()
+    const parent=ghost.parentElement
+    if(!parent){ setTimeout(wander,delay); return }
+    const rect=parent.getBoundingClientRect()
     const gw=ghost.offsetWidth||140
     const gh=ghost.offsetHeight||140
     const maxX=Math.max(0,rect.width-gw-20)
