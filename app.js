@@ -91,26 +91,17 @@ async function loadFrames(){
   frames.forEach(f=>{
     const card=document.createElement('button')
     card.className='frame-card neo-card'
-    const ratio = f.w/f.h
-    // wadah menyesuaikan rasio png — card bagus, tidak gepeng
+    // wadah fixed height biar new1 (600x2000) tidak kepanjangan vs new2 (1080x1350) — no scroll
     card.style.display='flex'; card.style.flexDirection='column'
     const imgWrap=document.createElement('div')
-    imgWrap.style.width='100%'
-    imgWrap.style.aspectRatio=String(ratio)
-    imgWrap.style.overflow='hidden'
-    imgWrap.style.background='#FAFAFA'
-    imgWrap.style.border='3px solid #111'
-    imgWrap.style.display='grid'
-    imgWrap.style.placeItems='center'
+    imgWrap.className='card-img-wrap'
     const img=document.createElement('img')
     img.src=f.src; img.alt=f.name; img.loading='lazy'
-    img.style.width='100%'; img.style.height='100%'; img.style.objectFit='contain'
     imgWrap.appendChild(img)
     const meta=document.createElement('div')
     meta.style.marginTop='10px'
     meta.innerHTML=`<b>${f.name}</b><span>${f.slots.length} foto • ${f.w}×${f.h}</span>`
     card.appendChild(imgWrap); card.appendChild(meta)
-    // set grid item span? keep 2 cols, but tall frames will look tall naturally
     card.onclick=()=> selectFrame(f)
     grid.appendChild(card)
   })
@@ -121,7 +112,14 @@ function selectFrame(f){
   boothTitle.textContent = f.name
   framePreviewImg.src = f.src
   const preview=$('#frame-preview')
-  preview.style.aspectRatio = `${f.w}/${f.h}`
+  const r=f.w/f.h
+  const h=520
+  const w=Math.round(h*r)
+  preview.style.height=h+'px'
+  preview.style.width=w+'px'
+  preview.style.maxWidth='100%'
+  preview.style.aspectRatio='auto'
+  preview.style.margin='0 auto'
   const ratio = f.slots[0] ? (f.slots[0].w / f.slots[0].h) : 3/4
   videoWrap.style.aspectRatio = String(ratio)
   buildSlots()
