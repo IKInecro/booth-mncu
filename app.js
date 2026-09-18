@@ -162,7 +162,7 @@ function captureToCanvas(){
   const c=document.createElement('canvas')
   c.width=vw; c.height=vh
   const ctx=c.getContext('2d')
-  ctx.translate(vw,0); ctx.scale(-1,1)
+  // ponytail: result jangan mirror — preview video mirror via CSS, tapi hasil canvas tidak di-flip
   ctx.drawImage(video,0,0,vw,vh)
   return c
 }
