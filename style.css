@@ -38,3 +38,13 @@ video{width:100%;height:100%;object-fit:cover;transform:scaleX(-1);display:block
 .result{max-width:360px;width:100%;border-radius:12px;border:1px solid var(--line);background:#fff;display:block;margin:14px auto}
 .row{display:flex;gap:8px;flex-wrap:wrap;align-items:center;justify-content:center}
 .foot{position:fixed;bottom:8px;left:0;right:0;text-align:center;font-size:11px;color:#6a6a74;pointer-events:none}
+/* booth & result = putih semua */
+#view-booth,#view-result{background:#fff;color:#111}
+#view-booth .muted,#view-result .muted{color:#6b7280}
+#view-booth .video-wrap{border-color:#e5e7eb;background:#f3f4f6}
+#view-booth .btn{border-color:#e5e7eb;background:#fff;color:#111}
+#view-booth .btn.primary{background:#111;color:#fff;border-color:#111}
+#view-booth .btn.ghost{border-color:#e5e7eb}
+#view-booth .dot{background:#e5e7eb;border-color:#d1d5db}
+#view-booth .thumbs img{border-color:#e5e7eb}
+#view-booth .foot,#view-result .foot{color:#9ca3af}
