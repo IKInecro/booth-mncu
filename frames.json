@@ -1,7 +1,7 @@
 [
   {
     "id": "new1",
-    "name": "New1 4 Foto",
+    "name": "4 Foto",
     "src": "./frames/new1.png",
     "w": 600,
     "h": 2000,
@@ -34,7 +34,7 @@
   },
   {
     "id": "new2",
-    "name": "New2 3 Foto Diagonal",
+    "name": "3 Foto",
     "src": "./frames/new2.png",
     "w": 1080,
     "h": 1350,

@@ -78,8 +78,9 @@ h1{font-size:28px;line-height:1.15;margin:8px 0}h2{font-size:22px;margin:0}
 .neo-desc{font-family:'JetBrains Mono',monospace;font-size:12px;color:#374151;line-height:1.6;margin:0}
 .neo-hint{font-family:'JetBrains Mono',monospace;font-size:11px;color:#6b7280;margin-top:12px}
 .msg{margin-top:12px;padding:10px 12px;background:#FF4D8D;color:#fff;border:3px solid #111;box-shadow:3px 3px 0 #111;font-family:'JetBrains Mono',monospace;font-size:12px;text-align:left}
-/* frames */
-.view-frames{background:#FAFAFA}
+/* frames — atasan biar tidak terlalu bawah */
+.view-frames{background:#FAFAFA;align-items:start;justify-items:center;padding-top:36px}
+@media(min-width:768px){.view-frames{padding-top:48px}}
 .wrap{max-width:860px;width:100%;position:relative;z-index:2}
 .top{margin-bottom:16px}
 .top h2{font-family:'Oswald',sans-serif;font-size:36px;text-transform:uppercase;letter-spacing:-.02em}
