@@ -189,7 +189,7 @@ function renderProgress(){
   }
   boothStep.textContent = `${cur}/${n}`
   badgeText.textContent = cur>=n ? 'Selesai' : 'Slot '+(cur+1)+' dari '+n
-  boothHint.textContent = cur>=n ? 'Strip penuh — lihat hasil' : 'Pose di kamera kanan, foto akan masuk ke slot kiri'
+  boothHint.textContent = cur>=n ? 'Strip penuh — lihat hasil' : ''
   captureText.textContent = cur>=n ? 'Lihat Hasil' : 'Ambil Foto'
   btnCapture.disabled = false
   $('#btn-retake').hidden = cur===0
