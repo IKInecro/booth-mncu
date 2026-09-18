@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Photobooth — Booth</title>
+  <meta name="description" content="Photobooth multi-foto + frame PNG transparan — plain HTML, no build" />
+  <link rel="stylesheet" href="./style.css" />
+</head>
+<body>
+  <section id="view-gate" class="view">
+    <div class="card gate">
+      <p class="eyebrow">BOOTH — MULTI FOTO</p>
+      <h1>Izinkan akses kamera<br>untuk masuk</h1>
+      <p class="muted">Kamera hanya di device kamu. Tidak ada upload — semua di browser.</p>
+      <button id="btn-allow" class="btn primary">Buka Kamera →</button>
+      <p id="gate-msg" class="msg" hidden></p>
+      <p class="hint">Butuh HTTPS & klik. Kalau ditolak, klik gembok di address bar → Allow Camera.</p>
+    </div>
+  </section>
+
+  <section id="view-frames" class="view" hidden>
+    <div class="wrap">
+      <header class="top">
+        <h2>Pilih Frame</h2>
+        <p class="muted">1 frame = beberapa foto. Trial: 3 & 4 foto vertikal.</p>
+      </header>
+      <div id="frame-grid" class="grid"></div>
+      <button id="btn-back-to-gate" class="btn ghost">← Kembali</button>
+    </div>
+  </section>
+
+  <section id="view-booth" class="view" hidden>
+    <div class="booth-layout">
+      <div class="stage">
+        <div class="video-wrap">
+          <video id="video" autoplay playsinline muted></video>
+          <img id="frame-overlay" alt="" />
+          <div id="countdown" class="countdown" hidden></div>
+          <div id="flash" class="flash" hidden></div>
+        </div>
+        <div class="controls">
+          <div class="progress" id="progress"></div>
+          <p id="booth-hint" class="muted center"></p>
+          <div class="row">
+            <button id="btn-change-frame" class="btn ghost">Ganti Frame</button>
+            <button id="btn-capture" class="btn primary big">📸 Ambil Foto</button>
+            <button id="btn-retake" class="btn ghost" hidden>Ulangi</button>
+          </div>
+          <div id="thumbs" class="thumbs"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="view-result" class="view" hidden>
+    <div class="wrap center">
+      <h2>Hasil Strip ✨</h2>
+      <p class="muted">Tap tahan / klik kanan untuk save. Atau klik Download.</p>
+      <img id="result-img" class="result" alt="hasil photobooth" />
+      <canvas id="final-canvas" hidden></canvas>
+      <div class="row center">
+        <button id="btn-download" class="btn primary">⬇ Download PNG</button>
+        <button id="btn-restart" class="btn ghost">Foto Lagi</button>
+        <button id="btn-change-frame2" class="btn ghost">Ganti Frame</button>
+      </div>
+    </div>
+  </section>
+
+  <footer class="foot">Plain HTML • Canvas PNG transparan • booth/ — ponytail ultra</footer>
+  <script src="./app.js"></script>
+</body>
+</html>
