@@ -112,19 +112,25 @@ function selectFrame(f){
   boothTitle.textContent = f.name
   framePreviewImg.src = f.src
   const preview=$('#frame-preview')
-  // selaras tinggi biar new1 (600x2000) tidak kepanjangan vs new2 (1080x1350) — simetris tinggi walau lebar beda, no scroll, tidak nyatu kamera
+  // fix: new1 600x2000 sangat tinggi vs new2 1080x1350 — pakai tinggi tetap simetris biar full visible no scroll, tidak nyatu kamera
   const r=f.w/f.h
-  const h=420
-  const w=Math.round(h*r)
-  preview.style.height=h+'px'
-  preview.style.width=w+'px'
-  preview.style.maxWidth='100%'
-  preview.style.aspectRatio='auto'
-  preview.style.margin='0 auto'
-  preview.style.display='grid'
-  preview.style.placeItems='center'
+  const targetH = window.innerWidth <= 860 ? 440 : 520
+  // width dibatasi kolom 340px biar tidak nyatu kamera
+  const maxW = 340
+  let h = targetH
+  let w = Math.round(h * r)
+  if(w > maxW){ w = maxW; h = Math.round(w / r) }
+  preview.style.height = h + 'px'
+  preview.style.width = w + 'px'
+  preview.style.maxWidth = '100%'
+  preview.style.aspectRatio = 'auto'
+  preview.style.margin = '0 auto'
+  preview.style.display = 'grid'
+  preview.style.placeItems = 'center'
   const ratio = f.slots[0] ? (f.slots[0].w / f.slots[0].h) : 3/4
   videoWrap.style.aspectRatio = String(ratio)
+  // cegah video-wrap nabrak preview di new2 diagonal
+  videoWrap.style.maxWidth = '100%'
   buildSlots()
   renderProgress()
   show('booth')
