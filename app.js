@@ -56,6 +56,18 @@ const btnCapture=$('#btn-capture')
 const captureText=$('#capture-text')
 const resultImg=$('#result-img')
 const finalCanvas=$('#final-canvas')
+const sndAll=new Audio('./sound/allbutton.wav'),sndCount=new Audio('./sound/countdown.mp3'),sndShoot=new Audio('./sound/camera_shoot.wav');[sndAll,sndCount,sndShoot].forEach(a=>a.preload='auto');const play=a=>{a.currentTime=0;a.play().catch(()=>{})};document.addEventListener('click',e=>{const b=e.target.closest('button');if(b&&b.id!=='btn-capture')play(sndAll)})
+let timerSec=3,autoShoot=false,curFilter='normal'
+const filters={normal:'none',bw:'grayscale(1)',vintage:'sepia(.6) contrast(1.1) brightness(.9)',soft:'contrast(.9) brightness(1.05) saturate(1.1) blur(.4px)'}
+function applyFilter(f){curFilter=f;video.style.filter=filters[f]||'none'}
+document.querySelectorAll('.timer-btn').forEach(b=>b.onclick=()=>{
+  timerSec=+b.dataset.timer||3
+  document.querySelectorAll('.timer-btn').forEach(x=>{x.classList.toggle('neo-btn-primary',x===b);x.classList.toggle('neo-btn',x!==b)})
+})
+;(()=>{
+  const a=document.getElementById('auto-shoot');if(a)a.onchange=e=>autoShoot=e.target.checked
+  const fs=document.getElementById('filter-select');if(fs)fs.onchange=e=>applyFilter(e.target.value)
+})()
 
 $('#btn-allow').onclick = async ()=>{
   if(isMobile()){ updateMobileBlock(); return }
@@ -216,17 +228,19 @@ function captureToCanvas(){
   const c=document.createElement('canvas')
   c.width=vw; c.height=vh
   const ctx=c.getContext('2d')
+  ctx.filter=filters[curFilter]||'none'
   // mirror biar hasil sama kayak preview (video CSS mirrored)
   ctx.translate(vw,0); ctx.scale(-1,1)
   ctx.drawImage(video,0,0,vw,vh)
   return c
 }
 function sleep(ms){return new Promise(r=>setTimeout(r,ms))}
-async function doCountdown(){
+async function doCountdown(sec=timerSec){
   countdownEl.hidden=false
-  for(let n=3;n>=1;n--){
+  for(let n=sec;n>=1;n--){
     countdownEl.textContent=n
-    await sleep(700)
+    if(n===3) play(sndCount)
+    await sleep(n<=3?1110:1000)
   }
   countdownEl.textContent=' '
   await sleep(220)
@@ -239,20 +253,23 @@ function doFlash(){
 btnCapture.onclick = async ()=>{
   if(!selected) return
   if(photosCanvases.length>=selected.slots.length){
-    await composeAndShow()
+    play(sndAll);await composeAndShow()
     return
   }
   btnCapture.disabled=true
   await doCountdown()
   const cap = captureToCanvas()
   if(!cap){ btnCapture.disabled=false; return }
-  doFlash()
+  doFlash();play(sndShoot)
   photosCanvases.push(cap)
   renderProgress()
   btnCapture.disabled=false
   if(photosCanvases.length>=selected.slots.length){
     await sleep(420)
     await composeAndShow()
+  }else if(autoShoot){
+    await sleep(900)
+    if(autoShoot && photosCanvases.length < selected.slots.length) btnCapture.click()
   }
 }
 $('#btn-retake').onclick=()=>{
