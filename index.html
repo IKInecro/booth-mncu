@@ -4,16 +4,28 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Photobooth — Booth</title>
-  <meta name="description" content="Photobooth multi-foto + frame PNG transparan — plain HTML, no build" />
+  <meta name="description" content="Photobooth multi-foto + frame PNG transparan — plain HTML" />
   <link rel="stylesheet" href="./style.css" />
 </head>
 <body>
+  <!-- icons -->
+  <svg width="0" height="0" style="position:absolute">
+    <defs>
+      <symbol id="i-camera" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3.5"/><path d="M12 13v-1"/></symbol>
+      <symbol id="i-refresh" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 12a9 9 0 1 1-2.6-6.4"/><path d="M21 3v7h-7"/></symbol>
+      <symbol id="i-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></symbol>
+      <symbol id="i-download" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></symbol>
+      <symbol id="i-grid" viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></symbol>
+      <symbol id="i-check" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M20 6L9 17l-5-5"/></symbol>
+    </defs>
+  </svg>
+
   <section id="view-gate" class="view">
     <div class="card gate">
       <p class="eyebrow">BOOTH — MULTI FOTO</p>
       <h1>Izinkan akses kamera<br>untuk masuk</h1>
       <p class="muted">Kamera hanya di device kamu. Tidak ada upload — semua di browser.</p>
-      <button id="btn-allow" class="btn primary">Buka Kamera →</button>
+      <button id="btn-allow" class="btn primary">Buka Kamera <svg class="icon"><use href="#i-camera"/></svg></button>
       <p id="gate-msg" class="msg" hidden></p>
       <p class="hint">Butuh HTTPS & klik. Kalau ditolak, klik gembok di address bar → Allow Camera.</p>
     </div>
@@ -23,31 +35,50 @@
     <div class="wrap">
       <header class="top">
         <h2>Pilih Frame</h2>
-        <p class="muted">1 frame = beberapa foto. Trial: 3 & 4 foto vertikal.</p>
+        <p class="muted">1 frame = beberapa foto. Kiri preview strip, kanan kamera akan menyesuaikan rasio slot.</p>
       </header>
       <div id="frame-grid" class="grid"></div>
-      <button id="btn-back-to-gate" class="btn ghost">← Kembali</button>
+      <button id="btn-back-to-gate" class="btn ghost"><svg class="icon icon-sm"><use href="#i-arrow"/></svg> Kembali</button>
     </div>
   </section>
 
   <section id="view-booth" class="view" hidden>
     <div class="booth-layout">
-      <div class="stage">
-        <div class="video-wrap">
-          <video id="video" autoplay playsinline muted></video>
-          <img id="frame-overlay" alt="" />
-          <div id="countdown" class="countdown" hidden></div>
-          <div id="flash" class="flash" hidden></div>
-        </div>
-        <div class="controls">
+      <div class="booth-head">
+        <h2 id="booth-title">Booth</h2>
+        <div class="row" style="justify-content:flex-end">
           <div class="progress" id="progress"></div>
+          <span class="muted" id="booth-step" style="font-size:12px"></span>
+        </div>
+      </div>
+      <div class="stage">
+        <!-- KIRI — PREVIEW FRAME YANG LANGSUNG KEISI -->
+        <div class="frame-preview-wrap">
+          <div class="frame-preview" id="frame-preview">
+            <div class="frame-preview-bg muted">Memuat frame…</div>
+            <div class="slot-layer" id="slot-layer"></div>
+            <img id="frame-preview-img" class="frame-preview-img" alt="" />
+          </div>
+          <p class="muted center" style="font-size:12px">Preview strip — tiap foto langsung masuk ke slot</p>
+          <div class="row">
+            <button id="btn-change-frame" class="btn ghost"><svg class="icon icon-sm"><use href="#i-grid"/></svg> Ganti Frame</button>
+            <button id="btn-retake" class="btn ghost" hidden><svg class="icon icon-sm"><use href="#i-refresh"/></svg> Ulangi Slot</button>
+          </div>
+        </div>
+
+        <!-- KANAN — KAMERA GEDE, RASIO NGIKUT SLOT -->
+        <div class="camera-panel">
+          <div class="video-wrap" id="video-wrap">
+            <video id="video" autoplay playsinline muted></video>
+            <div class="badge" id="slot-badge"><span class="dot-mini"></span><span id="badge-text">Slot 1</span></div>
+            <div id="countdown" class="countdown" hidden></div>
+            <div id="flash" class="flash" hidden></div>
+          </div>
           <p id="booth-hint" class="muted center"></p>
           <div class="row">
-            <button id="btn-change-frame" class="btn ghost">Ganti Frame</button>
-            <button id="btn-capture" class="btn primary big">📸 Ambil Foto</button>
-            <button id="btn-retake" class="btn ghost" hidden>Ulangi</button>
+            <button id="btn-capture" class="btn primary big"><svg class="icon"><use href="#i-camera"/></svg> <span id="capture-text">Ambil Foto</span></button>
           </div>
-          <div id="thumbs" class="thumbs"></div>
+          <div id="thumbs" class="thumbs" hidden></div>
         </div>
       </div>
     </div>
@@ -55,19 +86,19 @@
 
   <section id="view-result" class="view" hidden>
     <div class="wrap center">
-      <h2>Hasil Strip ✨</h2>
+      <h2>Hasil Strip</h2>
       <p class="muted">Tap tahan / klik kanan untuk save. Atau klik Download.</p>
       <img id="result-img" class="result" alt="hasil photobooth" />
       <canvas id="final-canvas" hidden></canvas>
       <div class="row center">
-        <button id="btn-download" class="btn primary">⬇ Download PNG</button>
-        <button id="btn-restart" class="btn ghost">Foto Lagi</button>
-        <button id="btn-change-frame2" class="btn ghost">Ganti Frame</button>
+        <button id="btn-download" class="btn primary"><svg class="icon icon-sm"><use href="#i-download"/></svg> Download PNG</button>
+        <button id="btn-restart" class="btn ghost"><svg class="icon icon-sm"><use href="#i-refresh"/></svg> Foto Lagi</button>
+        <button id="btn-change-frame2" class="btn ghost"><svg class="icon icon-sm"><use href="#i-grid"/></svg> Ganti Frame</button>
       </div>
     </div>
   </section>
 
-  <footer class="foot">Plain HTML • Canvas PNG transparan • booth/ — ponytail ultra</footer>
+  <footer class="foot">Plain HTML • Canvas PNG transparan • booth-mncu</footer>
   <script src="./app.js"></script>
 </body>
 </html>

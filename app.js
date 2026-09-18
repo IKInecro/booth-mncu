@@ -1,4 +1,4 @@
-// ponytail: ultra minimal — plain JS, no build, no import, python3 -m http.server ready
+// ponytail: plain JS, no emoji, SVG icons, kiri frame langsung keisi, kanan kamera rasio ngikut slot
 const $ = s => document.querySelector(s)
 const views = {
   gate: $('#view-gate'),
@@ -15,13 +15,18 @@ let selected=null
 let photosCanvases=[]
 
 const video=$('#video')
-const overlay=$('#frame-overlay')
+const videoWrap=$('#video-wrap')
+const slotLayer=$('#slot-layer')
+const framePreviewImg=$('#frame-preview-img')
 const countdownEl=$('#countdown')
 const flashEl=$('#flash')
 const progressEl=$('#progress')
-const thumbsEl=$('#thumbs')
 const boothHint=$('#booth-hint')
+const boothTitle=$('#booth-title')
+const boothStep=$('#booth-step')
+const badgeText=$('#badge-text')
 const btnCapture=$('#btn-capture')
+const captureText=$('#capture-text')
 const resultImg=$('#result-img')
 const finalCanvas=$('#final-canvas')
 
@@ -41,11 +46,11 @@ $('#btn-allow').onclick = async ()=>{
     }else if(name==='NotFoundError'){
       msg.textContent='Kamera tidak ditemukan.'
     }else if(location.protocol!=='https:' && location.hostname!=='localhost' && location.hostname!=='127.0.0.1'){
-      msg.textContent='Butuh HTTPS atau localhost untuk kamera. Pakai python di localhost sudah aman.'
+      msg.textContent='Butuh HTTPS atau localhost untuk kamera.'
     }else{
       msg.textContent='Gagal buka kamera: '+(e.message||name)
     }
-    $('#btn-allow').textContent='Coba Lagi →'
+    $('#btn-allow').innerHTML='Coba Lagi <svg class="icon icon-sm"><use href="#i-camera"/></svg>'
   }
 }
 $('#btn-back-to-gate').onclick=()=> show('gate')
@@ -66,12 +71,51 @@ async function loadFrames(){
 function selectFrame(f){
   selected=f
   photosCanvases=[]
+  boothTitle.textContent = f.name
+  // set frame preview image
+  framePreviewImg.src = f.src
+  // set preview aspect to frame ratio
+  const preview=$('#frame-preview')
+  preview.style.aspectRatio = `${f.w}/${f.h}`
+  // kamera rasio ngikut slot pertama
+  const ratio = f.slots[0] ? (f.slots[0].w / f.slots[0].h) : 3/4
+  videoWrap.style.aspectRatio = String(ratio)
+  buildSlots()
   renderProgress()
-  renderThumbs()
-  overlay.src = f.src
   show('booth')
   startCamera()
 }
+function buildSlots(){
+  slotLayer.innerHTML=''
+  if(!selected) return
+  const W=selected.w, H=selected.h
+  selected.slots.forEach((s, i)=>{
+    const el=document.createElement('div')
+    el.className='slot empty'
+    el.dataset.idx=i
+    // posisi skala ke 100% (frame preview width = 100%)
+    el.style.left = (s.x / W * 100) + '%'
+    el.style.top = (s.y / H * 100) + '%'
+    el.style.width = (s.w / W * 100) + '%'
+    el.style.height = (s.h / H * 100) + '%'
+    const canvas = photosCanvases[i]
+    if(canvas){
+      el.classList.remove('empty')
+      el.classList.add('filled')
+      const img=document.createElement('img')
+      img.src = canvas.toDataURL('image/jpeg',0.85)
+      el.appendChild(img)
+    }else{
+      const isActive = i===photosCanvases.length
+      if(isActive) el.classList.add('active')
+      const span=document.createElement('span')
+      span.textContent = isActive ? 'Slot '+(i+1)+' siap' : 'Slot '+(i+1)
+      el.appendChild(span)
+    }
+    slotLayer.appendChild(el)
+  })
+}
+
 $('#btn-change-frame').onclick=()=>{
   stopCamera()
   show('frames')
@@ -82,25 +126,22 @@ $('#btn-change-frame2').onclick=()=>{
 function renderProgress(){
   if(!selected) return
   const n=selected.slots.length
+  const cur=photosCanvases.length
   progressEl.innerHTML=''
   for(let i=0;i<n;i++){
     const d=document.createElement('div')
-    d.className='dot'+(i<photosCanvases.length?' done':'')+(i===photosCanvases.length?' active':'')
+    d.className='dot'+(i<cur?' done':'')+(i===cur?' active':'')
     progressEl.appendChild(d)
   }
-  boothHint.textContent = photosCanvases.length>=n ? 'Strip penuh — lihat hasil' : `Foto ${photosCanvases.length+1} dari ${n} — pose dulu!`
-  btnCapture.disabled = photosCanvases.length>=n
-  btnCapture.textContent = photosCanvases.length>=n ? 'Selesai ✓' : '📸 Ambil Foto'
-  $('#btn-retake').hidden = photosCanvases.length===0
+  boothStep.textContent = `${cur}/${n}`
+  badgeText.textContent = cur>=n ? 'Selesai' : 'Slot '+(cur+1)+' dari '+n
+  boothHint.textContent = cur>=n ? 'Strip penuh — lihat hasil' : 'Pose di kamera kanan, foto akan masuk ke slot kiri'
+  captureText.textContent = cur>=n ? 'Lihat Hasil' : 'Ambil Foto'
+  btnCapture.disabled = false
+  $('#btn-retake').hidden = cur===0
+  buildSlots()
 }
-function renderThumbs(){
-  thumbsEl.innerHTML=''
-  photosCanvases.forEach((c)=>{
-    const img=document.createElement('img')
-    img.src=c.toDataURL('image/jpeg',0.85)
-    thumbsEl.appendChild(img)
-  })
-}
+
 async function startCamera(){
   try{
     stream = await navigator.mediaDevices.getUserMedia({video:{facingMode:'user', width:{ideal:1280}, height:{ideal:720}}, audio:false})
@@ -132,8 +173,8 @@ async function doCountdown(){
     countdownEl.textContent=n
     await sleep(700)
   }
-  countdownEl.textContent='📸'
-  await sleep(280)
+  countdownEl.textContent=' '
+  await sleep(220)
   countdownEl.hidden=true
 }
 function doFlash(){
@@ -152,7 +193,7 @@ btnCapture.onclick = async ()=>{
   if(!cap){ btnCapture.disabled=false; return }
   doFlash()
   photosCanvases.push(cap)
-  renderProgress(); renderThumbs()
+  renderProgress()
   btnCapture.disabled=false
   if(photosCanvases.length>=selected.slots.length){
     await sleep(420)
@@ -161,7 +202,7 @@ btnCapture.onclick = async ()=>{
 }
 $('#btn-retake').onclick=()=>{
   photosCanvases.pop()
-  renderProgress(); renderThumbs()
+  renderProgress()
 }
 async function composeAndShow(){
   if(!selected || photosCanvases.length===0) return
@@ -211,8 +252,8 @@ $('#btn-download').onclick=()=>{
 $('#btn-restart').onclick=()=>{
   photosCanvases=[]
   resultImg.src=''
-  renderProgress(); renderThumbs()
-  overlay.src=selected?.src||''
+  // rebuild preview + kamera rasio tetap
+  renderProgress()
   show('booth')
   startCamera()
 }
