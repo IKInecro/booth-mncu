@@ -41,19 +41,33 @@ h1{font-size:28px;line-height:1.15;margin:8px 0}h2{font-size:22px;margin:0}
 .neo-btn:hover{transform:translate(2px,2px);box-shadow:2px 2px 0 #111}
 .neo-btn:active{transform:translate(4px,4px);box-shadow:none}
 .neo-btn:disabled{opacity:.45;pointer-events:none}
-.neo-btn-primary{background:var(--neo-yellow)}
+.neo-btn-primary{background:var(--neo-yellow);padding:16px 28px;font-size:15px;min-width:220px}
+@media(max-width:640px){.neo-btn-primary{padding:14px 22px;font-size:14px;min-width:180px}}
+.neo-btn-primary .icon{width:20px;height:20px}
 .neo-btn-dark{background:#111;color:#fff}
 .icon{width:16px;height:16px;flex:none;stroke-width:1.9}
 .icon-sm{width:14px;height:14px}
-/* landing */
-.view-gate{background:#FAFAFA;min-height:105dvh;padding-top:48px}
+/* landing — margin atasan, glitch akurat web-jualan */
+.view-gate{background:#FAFAFA;min-height:105dvh;padding:24px 24px 48px;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;gap:18px;padding-top:56px}
+@media(min-width:768px){.view-gate{padding-top:72px;gap:22px}}
 .landing-grid{position:absolute;inset:0;opacity:.04;pointer-events:none;background-image:linear-gradient(#111 1px,transparent 1px),linear-gradient(90deg,#111 1px,transparent 1px);background-size:20px 20px}
-.marco-head{position:relative;z-index:2;text-align:center;margin-bottom:18px}
-.marco-headline{font-family:'Oswald',sans-serif;font-size:clamp(48px,11vw,110px);line-height:.85;letter-spacing:-.04em;text-transform:uppercase;font-weight:700;color:#111;position:relative;display:inline-block}
-.marco-headline .outline{position:absolute;inset:0;transform:translate(5px,5px);-webkit-text-stroke:2.5px #111;color:transparent;pointer-events:none}
-.marco-cake-word{position:relative}
-.topi-hat{position:absolute;left:74%;top:-.32em;transform:translateX(-50%) rotate(-6deg);width:1.05em;height:auto;pointer-events:none;filter:drop-shadow(2px 2px 0 rgba(0,0,0,.15));z-index:2}
-.neo-landing-card{max-width:460px;width:100%;padding:28px;text-align:center}
+.marco-head{position:relative;z-index:2;text-align:center;margin-bottom:6px;width:100%}
+.marco-headline{font-family:'Oswald',sans-serif;font-size:clamp(56px,14vw,320px);line-height:.82;letter-spacing:-.04em;text-transform:uppercase;font-weight:700;color:#111;position:relative;display:inline-block;max-width:100%}
+/* glitch akurat — copy web-jualan */
+.brutal-headline{line-height:.9;letter-spacing:-.03em}
+@keyframes glitch{0%,92.9%,100%{clip-path:inset(0 0 100% 0);transform:none}93%{clip-path:inset(0 0 55% 0);transform:translate(-4px,1px)}95%{clip-path:inset(30% 0 30% 0);transform:translate(4px,-1px)}97%{clip-path:inset(60% 0 0 0);transform:translate(-3px,2px)}}
+.glitch-text{position:relative;display:inline-block;line-height:.9}
+.glitch-text::before,.glitch-text::after{content:attr(data-text);position:absolute;inset:0;background:#FAFAFA;line-height:.9}
+.glitch-text::before{color:#FF4D8D;animation:glitch 6s infinite steps(1);z-index:-1}
+.glitch-text::after{color:#0038FF;animation:glitch 6s infinite steps(1);animation-delay:.1s;z-index:-2}
+.brutal-headline .glitch-text{color:#111}
+.glitch-outline{line-height:.9}
+.cake-word{display:inline-block;animation:cakeColor 6s infinite steps(1)}
+@keyframes cakeColor{0%,92.9%{color:#111}93%{color:#FF4D8D}95%{color:#22C55E}97%{color:#FACC15}100%{color:#111}}
+.topi-hat{position:absolute!important;left:74%!important;top:-.32em!important;transform:translateX(-50%) rotate(-6deg)!important;width:5.1em!important;height:auto;pointer-events:none;z-index:10!important;filter:drop-shadow(2px 2px 0 rgba(0,0,0,.15))}
+.brutal-headline{overflow:visible!important}
+#ghost+.marco-head{margin-top:0}
+.neo-landing-card{max-width:520px;width:100%;padding:28px;text-align:center;margin-top:6px}
 .neo-title{font-family:'Oswald',sans-serif;font-size:32px;line-height:.92;letter-spacing:-.03em;text-transform:uppercase;color:#111;margin:12px 0 8px}
 .neo-desc{font-family:'JetBrains Mono',monospace;font-size:12px;color:#374151;line-height:1.6;margin:0}
 .neo-hint{font-family:'JetBrains Mono',monospace;font-size:11px;color:#6b7280;margin-top:12px}
