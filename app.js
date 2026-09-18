@@ -70,11 +70,9 @@ $('#btn-allow').onclick = async ()=>{
     msg.hidden=false
     const name=e?.name||''
     if(name==='NotAllowedError' || name==='PermissionDeniedError'){
-      msg.textContent='Akses ditolak. Klik ikon gembok di address bar → Allow Camera → lalu Coba Lagi.'
+      msg.textContent='Akses ditolak.'
     }else if(name==='NotFoundError'){
       msg.textContent='Kamera tidak ditemukan.'
-    }else if(location.protocol!=='https:' && location.hostname!=='localhost' && location.hostname!=='127.0.0.1'){
-      msg.textContent='Butuh HTTPS atau localhost untuk kamera.'
     }else{
       msg.textContent='Gagal buka kamera: '+(e.message||name)
     }
@@ -106,7 +104,7 @@ async function loadFrames(){
     imgWrap.appendChild(img)
     const meta=document.createElement('div')
     meta.style.marginTop='10px'; meta.style.width='100%'; meta.style.textAlign='center'
-    meta.innerHTML=`<b>${f.name}</b><br><span>${f.slots.length} foto • ${f.w}×${f.h}</span>`
+    meta.innerHTML=`<b>${f.name}</b><br><span>${f.slots.length} foto</span>`
     card.appendChild(imgWrap); card.appendChild(meta)
     card.onclick=()=> selectFrame(f)
     grid.appendChild(card)

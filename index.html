@@ -47,7 +47,6 @@
 
     <div class="neo-card neo-landing-card">
       <h1 class="neo-title">Izinkan akses kamera<br>untuk masuk</h1>
-      <p class="neo-desc">Kamera hanya di device kamu. Tidak ada upload — semua di browser.</p>
       <button id="btn-allow" class="neo-btn neo-btn-primary"><span>Buka Kamera</span><svg class="icon"><use href="#i-camera"/></svg></button>
       <p id="gate-msg" class="msg" hidden></p>
     </div>
@@ -59,7 +58,6 @@
     <div class="wrap">
       <header class="top">
         <h2>Pilih Frame</h2>
-        <p>Grid menyesuaikan rasio PNG — card wadah otomatis ngikut tinggi frame biar preview bagus.</p>
       </header>
       <div id="frame-grid" class="grid"></div>
       <button id="btn-back-to-gate" class="neo-btn" style="margin-top:12px"><svg class="icon icon-sm"><use href="#i-arrow"/></svg> Kembali</button>
@@ -79,11 +77,9 @@
       <div class="stage">
         <div class="frame-preview-wrap">
           <div class="frame-preview" id="frame-preview">
-            <div class="frame-preview-bg">Memuat frame…</div>
             <div class="slot-layer" id="slot-layer"></div>
             <img id="frame-preview-img" class="frame-preview-img" alt="" />
           </div>
-          <p class="center" style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#6b7280">Preview strip — tiap foto langsung masuk ke slot kiri</p>
           <div class="row">
             <button id="btn-change-frame" class="neo-btn"><svg class="icon icon-sm"><use href="#i-grid"/></svg> Ganti Frame</button>
             <button id="btn-retake" class="neo-btn" hidden><svg class="icon icon-sm"><use href="#i-refresh"/></svg> Ulangi Slot</button>
@@ -112,17 +108,14 @@
       <div class="result-side">
         <button id="btn-change-frame2" class="neo-btn"><svg class="icon icon-sm"><use href="#i-grid"/></svg> Ganti Frame</button>
         <button id="btn-restart" class="neo-btn neo-btn-dark"><svg class="icon icon-sm"><use href="#i-refresh"/></svg> Foto Lagi</button>
-        <p class="result-meta">Kiri: ganti & ulang</p>
       </div>
       <div class="result-center">
         <h2 style="font-family:'Oswald',sans-serif;text-transform:uppercase">Hasil Strip</h2>
-        <p class="result-meta">Tap tahan / klik kanan untuk save</p>
         <img id="result-img" class="result" alt="hasil photobooth" />
         <canvas id="final-canvas" hidden></canvas>
       </div>
       <div class="result-side">
         <button id="btn-download" class="neo-btn neo-btn-primary"><svg class="icon icon-sm"><use href="#i-download"/></svg> Download PNG</button>
-        <p class="result-meta">Kanan: download — preview di tengah</p>
       </div>
     </div>
   </section>
