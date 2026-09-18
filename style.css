@@ -69,8 +69,8 @@ h1{font-size:28px;line-height:1.15;margin:8px 0}h2{font-size:22px;margin:0}
 .glitch-outline{line-height:.9}
 .cake-word{display:inline-block;animation:cakeColor 6s infinite steps(1)}
 @keyframes cakeColor{0%,92.9%{color:#111}93%{color:#FF4D8D}95%{color:#22C55E}97%{color:#FACC15}100%{color:#111}}
-.topi-hat{position:absolute!important;left:74%!important;top:-.32em!important;transform:translateX(-50%) rotate(-6deg)!important;width:5.1em!important;height:auto;pointer-events:none;z-index:10!important;filter:drop-shadow(2px 2px 0 rgba(0,0,0,.15))}
-@media(max-width:640px){.brutal-headline .glitch-outline{-webkit-text-stroke-width:2px!important}.topi-hat{top:-.28em!important;width:5.4em!important;left:72%!important}}
+.topi-hat{position:absolute!important;left:74%!important;top:-.32em!important;transform:translateX(-50%) rotate(-6deg)!important;width:1.7em!important;height:auto;pointer-events:none;z-index:10!important;filter:drop-shadow(2px 2px 0 rgba(0,0,0,.15))}
+@media(max-width:640px){.brutal-headline .glitch-outline{-webkit-text-stroke-width:2px!important}.topi-hat{top:-.28em!important;width:1.8em!important;left:72%!important}}
 #heroHeadline{overflow:visible!important}
 #ghost+.marco-head{margin-top:0}
 .neo-landing-card{max-width:520px;width:100%;padding:28px;text-align:center;margin-top:6px}
