@@ -91,16 +91,22 @@ async function loadFrames(){
   frames.forEach(f=>{
     const card=document.createElement('button')
     card.className='frame-card neo-card'
-    // wadah fixed height biar new1 (600x2000) tidak kepanjangan vs new2 (1080x1350) — no scroll
-    card.style.display='flex'; card.style.flexDirection='column'
+    card.style.display='flex'; card.style.flexDirection='column'; card.style.alignItems='center'
     const imgWrap=document.createElement('div')
     imgWrap.className='card-img-wrap'
+    // container menyesuaikan ukuran isinya — tinggi sama 280, lebar ngikut rasio biar simetris
+    const h = window.innerWidth <= 640 ? 240 : 280
+    const r = f.w / f.h
+    const w = Math.round(h * r)
+    imgWrap.style.height = h + 'px'
+    imgWrap.style.width = w + 'px'
+    imgWrap.style.maxWidth = '100%'
     const img=document.createElement('img')
     img.src=f.src; img.alt=f.name; img.loading='lazy'
     imgWrap.appendChild(img)
     const meta=document.createElement('div')
-    meta.style.marginTop='10px'
-    meta.innerHTML=`<b>${f.name}</b><span>${f.slots.length} foto • ${f.w}×${f.h}</span>`
+    meta.style.marginTop='10px'; meta.style.width='100%'; meta.style.textAlign='center'
+    meta.innerHTML=`<b>${f.name}</b><br><span>${f.slots.length} foto • ${f.w}×${f.h}</span>`
     card.appendChild(imgWrap); card.appendChild(meta)
     card.onclick=()=> selectFrame(f)
     grid.appendChild(card)
