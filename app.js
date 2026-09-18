@@ -218,6 +218,8 @@ function captureToCanvas(){
   const c=document.createElement('canvas')
   c.width=vw; c.height=vh
   const ctx=c.getContext('2d')
+  // mirror biar hasil sama kayak preview (video CSS mirrored)
+  ctx.translate(vw,0); ctx.scale(-1,1)
   ctx.drawImage(video,0,0,vw,vh)
   return c
 }
