@@ -112,14 +112,17 @@ function selectFrame(f){
   boothTitle.textContent = f.name
   framePreviewImg.src = f.src
   const preview=$('#frame-preview')
+  // selaras tinggi biar new1 (600x2000) tidak kepanjangan vs new2 (1080x1350) — simetris tinggi walau lebar beda, no scroll, tidak nyatu kamera
   const r=f.w/f.h
-  const h=520
+  const h=420
   const w=Math.round(h*r)
   preview.style.height=h+'px'
   preview.style.width=w+'px'
   preview.style.maxWidth='100%'
   preview.style.aspectRatio='auto'
   preview.style.margin='0 auto'
+  preview.style.display='grid'
+  preview.style.placeItems='center'
   const ratio = f.slots[0] ? (f.slots[0].w / f.slots[0].h) : 3/4
   videoWrap.style.aspectRatio = String(ratio)
   buildSlots()
