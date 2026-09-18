@@ -259,3 +259,37 @@ $('#btn-restart').onclick=()=>{
 }
 loadFrames()
 show('gate')
+// ghost wandering — dari web-jualan
+;(function(){
+  const ghost=document.getElementById('ghost')
+  const gate=document.getElementById('view-gate')
+  if(!ghost||!gate) return
+  const palette=['#22C55E','#0038FF','#FF4D8D','#FACC15','#EF4444']
+  let last=-1
+  setInterval(()=>{
+    let i;do{i=Math.floor(Math.random()*palette.length)}while(i===last)
+    last=i;ghost.style.setProperty('--ghost',palette[i])
+  },600)
+  if(window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+  ghost.style.left='12%';ghost.style.top='18%'
+  let lastX=0
+  function wander(){
+    const delay=1200+Math.random()*1800
+    const dur=(0.9+Math.random()*0.9).toFixed(2)
+    ghost.style.transition=`left ${dur}s ease, top ${dur}s ease, transform .25s ease`
+    const rect=gate.getBoundingClientRect()
+    const gw=ghost.offsetWidth||140
+    const gh=ghost.offsetHeight||140
+    const maxX=Math.max(0,rect.width-gw-20)
+    const maxY=Math.max(0,rect.height-gh-20)
+    const x=Math.random()*maxX
+    const y=Math.random()*maxY
+    if(x>lastX) ghost.classList.add('facing-right')
+    else ghost.classList.remove('facing-right')
+    lastX=x
+    ghost.style.left=x+'px'
+    ghost.style.top=y+'px'
+    setTimeout(wander,delay)
+  }
+  setTimeout(wander,900)
+})()
