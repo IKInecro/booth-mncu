@@ -330,6 +330,8 @@ $('#btn-restart').onclick=()=>{
 }
 loadFrames()
 show('gate')
+// loader hide
+;(()=>{function hide(){const l=document.getElementById('loader');if(l){l.classList.add('hide');setTimeout(()=>l.remove(),400)}}if(document.readyState==='complete')setTimeout(hide,800);else window.addEventListener('load',()=>setTimeout(hide,800))})()
 // ghost wandering — interaktif di semua view
 ;(function(){
   if(!ghost) return
